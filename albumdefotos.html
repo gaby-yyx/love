@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Cantinho ❤️</title>
+    <style>
+        /* CSS GERAL AQUI */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fce4ec; /* Um rosinha claro de fundo para combinar com os corações */
+            color: #333;
+            overflow-x: hidden; /* Evita barra de rolagem horizontal */
+            position: relative;
+        }
+
+        /* Corações no fundo */
+        .heart-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            background-color: rgba(255, 0, 0, 0.5); /* Vermelho translúcido */
+            transform: rotate(-45deg);
+            animation: floatHearts linear infinite;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 0, 0, 0.5);
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -50%;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: 50%;
+        }
+
+        @keyframes floatHearts {
+            0% {
+                transform: translateY(100vh) rotate(-45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+
+        /* Navbar */
+        nav {
+            background-color: #000; /* Preto */
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Espaço entre os itens do menu */
+        }
+
+        nav ul li a {
+            color: #fff; /* Branco */
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #ff0000; /* Vermelho */
+            color: #fff;
+        }
+
+        /* Seções (Páginas) */
+        .page {
+            display: none; /* Por padrão, todas as páginas ficam escondidas */
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .page.active {
+            display: block; /* A página ativa é exibida */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 {
+            color: #ff0000; /* Vermelho */
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        p {
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* Linha do Tempo */
+        .timeline-content {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #ff0000; /* Linha central vermelha */
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            position: relative; /* Mantido para alinhamento */
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse; /* Itens ímpares para o lado direito */
+        }
+
+        .timeline-item-date {
+            width: 20%;
+            text-align: center;
+            font-weight: bold;
+            color: #000; /* Preto */
+            font-size: 1.2em;
+        }
+
+        .timeline-item-content {
+            width: 35%; /* Espaço para o texto/descrição */
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .timeline-item-content::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:nth-child(even) .timeline-item-content::before { /* Seta para a direita */
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent #f7f7f7;
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-item-content::before { /* Seta para a esquerda */
+            border-width: 10px 10px 10px 0;
+            border-color: transparent #f7f7f7 transparent transparent;
+            left: -10px;
+        }
+
+        .timeline-item-photo {
+            width: 35%; /* Espaço para a imagem */
+            text-align: center;
+        }
+
+        .timeline-item-photo img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 3px solid #ff0000; /* Borda vermelha */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-item-photo img:hover {
+            transform: scale(1.03); /* Leve zoom ao passar o mouse */
+        }
+
+        /* Responsividade para telas menores da Linha do Tempo */
+        @media (max-width: 768px) {
+            .timeline-content::before {
+                left: 20px; /* Linha mais para a esquerda em telas pequenas */
+                transform: translateX(0);
+            }
+
+            .timeline-item {
+                flex-direction: column !important; /* Empilha os itens verticalmente */
+                align-items: flex-start;
+            }
+
+            .timeline-item-date {
+                width: 100%;
+                text-align: left;
+                margin-bottom: 10px;
+                padding-left: 40px; /* Alinha com a linha central */
+            }
+
+            .timeline-item-content,
+            .timeline-item-photo {
+                width: calc(100% - 60px); /* Ajusta largura para acomodar o padding */
+                margin-left: 60px; /* Espaço para a linha */
+            }
+
+            .timeline-item-content::before { /* Remove a seta em telas pequenas */
+                display: none;
+            }
+        }
+
+        /* Álbum de Fotos */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Colunas automáticas responsivas */
+            gap: 20px; /* Espaço entre as fotos */
+            padding: 20px;
+            justify-content: center; /* Centraliza as fotos */
+        }
+
+        .photo-item {
+            background-color: #fff;
+            border: 3px solid #ff0000; /* Borda vermelha */
+            border-radius: 10px;
+            overflow: hidden; /* Garante que a imagem não vaze da borda arredondada */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra mais destacada */
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animação suave */
+        }
+
+        .photo-item:hover {
+            transform: translateY(-5px) scale(1.02); /* Levanta e aumenta um pouco */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Sombra mais intensa */
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 200px; /* Altura fixa para todas as imagens */
+            object-fit: cover; /* Recorta a imagem para cobrir o espaço sem distorcer */
+            display: block;
+        }
+
+        .photo-item-caption {
+            padding: 15px;
+            background-color: #000; /* Fundo preto para a legenda */
+            color: #fff; /* Texto branco */
+            text-align: center;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        /* Efeito de Lightbox (para ver a imagem em tamanho maior) */
+        .lightbox {
+            display: none; /* Escondido por padrão */
+            position: fixed;
+            z-index: 1001; /* Acima de tudo */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8); /* Fundo escuro translúcido */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-content {
+            max-width: 80%;
+            max-height: 80%;
+            display: block;
+            margin: auto;
+            border: 5px solid #ff0000; /* Borda vermelha */
+            border-radius: 8px;
+            animation: zoomIn 0.3s ease-out;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #ff0000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="heart-background" id="heart-container"></div>
+
+    <nav>
+        <ul>
+            <li><a href="index.html" data-page="home">Início</a></li>
+            <li><a href="linhaadotempo.html" data-page="timeline">Nossa História</a></li>
+            <li><a href="albumdefotos.html" data-page="photos">Álbum de Fotos</a></li>
+            <li><a href="#quiz" data-page="quiz">Nosso Quiz</a></li>
+            <li><a href="#countdown" data-page="countdown">Contagem Regressiva</a></li>
+            <li><a href="#playlist" data-page="playlist">Nossas Músicas</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="page active">
+        <h1>Bem-vindos ao Nosso Cantinho Especial!</h1>
+        <p>Aqui você vai encontrar um pedacinho da nossa história, das nossas memórias e do nosso amor. Explore e divirta-se!</p>
+        <p>Feito com todo carinho para você, meu amor. ❤️</p>
+    </section>
+
+    <section id="timeline" class="page">
+        <h2>Nossa História</h2>
+        <div class="timeline-content">
+            <div class="timeline-item">
+                <div class="timeline-item-date">
+                    01/01/2023
+                </div>
+                <div class="timeline-item-content">
+                    <h3>Nosso Primeiro Encontro</h3>
+                    <p>O dia em que nossos olhares se cruzaram pela primeira vez e tudo começou a mudar. Um café especial que virou história!</p>
+                </div>
+                <div class="timeline-item-photo">
+                    <img src="https://via.placeholder.com/200x150?text=Primeiro+Encontro" alt="Nosso Primeiro Encontro">
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-item-date">
+                    15/02/2023
+                </div>
+                <div class="timeline-item-content">
+                    <h3>O Primeiro "Eu Te Amo"</h3>
+                    <p>Um momento mágico, sob as estrelas, onde nossos corações se declararam. Inesquecível!</p>
+                </div>
+                <div class="timeline-item-photo">
+                    <img src="https://via.placeholder.com/200x150?text=Eu+Te+Amo" alt="Primeiro Eu Te Amo">
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-item-date">
+                    10/04/2023
+                </div>
+                <div class="timeline-item-content">
+                    <h3>Nossa Primeira Viagem</h3>
+                    <p>Explorando novos lugares e criando memórias inesquecíveis juntos. Cada paisagem ficou mais linda com você!</p>
+                </div>
+                <div class="timeline-item-photo">
+                    <img src="https://via.placeholder.com/200x150?text=Primeira+Viagem" alt="Nossa Primeira Viagem">
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-item-date">
+                    05/08/2023
+                </div>
+                <div class="timeline-item-content">
+                    <h3>Dia da Oficialização</h3>
+                    <p>O dia em que nosso namoro se tornou oficial! Uma data para sempre celebrar nosso compromisso e carinho.</p>
+                </div>
+                <div class="timeline-item-photo">
+                    <img src="https://via.placeholder.com/200x150?text=Oficializacao" alt="Dia da Oficialização">
+                </div>
+            </div>
+
+            </div>
+    </section>
+
+    <section id="photos" class="page">
+        <h2>Álbum de Fotos</h2>
+        <div class="photo-gallery">
+            <div class="photo-item">
+                <img src="https://via.placeholder.com/300x200?text=Nossa+Foto+1" alt="Nosso Momento Feliz 1">
+                <div class="photo-item-caption">Nosso primeiro piquenique!</div>
+            </div>
+            <div class="photo-item">
+                <img src="https://via.placeholder.com/300x200?text=Nossa+Foto+2" alt="Nosso Momento Feliz 2">
+                <div class="photo-item-caption">Por do sol na praia!</div>
+            </div>
+            <div class="photo-item">
+                <img src="https://via.placeholder.com/300x200?text=Nossa+Foto+3" alt="Nosso Momento Feliz 3">
+                <div class="photo-item-caption">Noite de cinema em casa.</div>
+            </div>
+            <div class="photo-item">
+                <img src="https://via.placeholder.com/300x200?text=Nossa+Foto+4" alt="Nosso Momento Feliz 4">
+                <div class="photo-item-caption">Caminhada na montanha.</div>
+            </div>
+            </div>
+
+        <div id="lightbox" class="lightbox">
+            <span class="close-btn">&times;</span>
+            <img class="lightbox-content" id="lightbox-img">
+        </div>
+    </section>
+
+    <section id="quiz" class="page">
+        <h2>Nosso Quiz</h2>
+        <div class="quiz-content">
+            <p>Teste seus conhecimentos sobre a gente. Prepare-se para se divertir!</p>
+        </div>
+    </section>
+
+    <section id="countdown" class="page">
+        <h2>Contagem Regressiva para 1 Ano de Namoro!</h2>
+        <div id="countdown-timer" style="font-size: 2em; text-align: center; margin-top: 30px; color: #ff0000;">
+            </div>
+    </section>
+
+    <section id="playlist" class="page">
+        <h2>Nossas Músicas Favoritas</h2>
+        <div class="playlist-content">
+            <p>Nossa trilha sonora estará aqui para embalar nossos momentos.</p>
+        </div>
+    </section>
+
+    <script>
+        /* JAVASCRIPT GERAL AQUI */
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('nav ul li a');
+            const pages = document.querySelectorAll('.page');
+            const heartContainer = document.getElementById('heart-container');
+
+            // Função para mostrar a página correta
+            function showPage(pageId) {
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                });
+                const activePage = document.getElementById(pageId);
+                if (activePage) {
+                    activePage.classList.add('active');
+                }
+            }
+
+            // Lidar com cliques na navegação
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = link.getAttribute('data-page');
+                    showPage(pageId);
+
+                    // Opcional: Atualizar a URL sem recarregar a página
+                    history.pushState(null, '', `#${pageId}`);
+                });
+            });
+
+            // Lidar com a navegação inicial ou ao recarregar a página com hash
+            const initialHash = window.location.hash.substring(1);
+            if (initialHash && document.getElementById(initialHash)) {
+                showPage(initialHash);
+            } else {
+                showPage('home'); // Mostra a página inicial por padrão
+            }
+
+            // Gerar corações flutuantes
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heartContainer.appendChild(heart);
+
+                heart.style.width = Math.random() * 20 + 10 + 'px'; /* Tamanho entre 10 e 30px */
+                heart.style.height = heart.style.width;
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 5 + 5 + 's'; /* Duração entre 5 e 10s */
+                heart.style.opacity = Math.random() * 0.5 + 0.3; /* Opacidade entre 0.3 e 0.8 */
+
+                heart.addEventListener('animationend', () => {
+                    heart.remove();
+                });
+            }
+
+            setInterval(createHeart, 300); // Cria um coração a cada 300ms
+
+            // --- CONTADOR REGRESSIVO ---
+            // ATENÇÃO: Mude esta data para o dia exato do seu 1 ano de namoro!
+            // Formato: "Mês Dia, Ano Hora:Minuto:Segundo"
+            const countdownDate = new Date("December 25, 2025 00:00:00").getTime(); 
+
+            const x = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                const countdownTimer = document.getElementById("countdown-timer");
+                if (countdownTimer) {
+                    countdownTimer.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+                    if (distance < 0) {
+                        clearInterval(x);
+                        countdownTimer.innerHTML = "JÁ COMPLETAMOS 1 ANO DE NAMORO! ❤️";
+                    }
+                }
+            }, 1000);
+
+            // --- ÁLBUM DE FOTOS (LIGHTBOX) ---
+            const photoGallery = document.querySelector('.photo-gallery');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const closeBtn = document.querySelector('.close-btn');
+
+            photoGallery.addEventListener('click', (e) => {
+                if (e.target.tagName === 'IMG') {
+                    lightbox.style.display = 'flex'; // Muda para flex para centralizar
+                    lightboxImg.src = e.target.src;
+                }
+            });
+
+            closeBtn.addEventListener('click', () => {
+                lightbox.style.display = 'none';
+            });
+
+            // Fechar lightbox ao clicar fora da imagem
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

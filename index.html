@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Cantinho ❤️</title>
+    <style>
+        /* CSS GERAL AQUI */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fce4ec; /* Um rosinha claro de fundo para combinar com os corações */
+            color: #333;
+            overflow-x: hidden; /* Evita barra de rolagem horizontal */
+            position: relative;
+        }
+
+        /* Corações no fundo */
+        .heart-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            background-color: rgba(255, 0, 0, 0.5); /* Vermelho translúcido */
+            transform: rotate(-45deg);
+            animation: floatHearts linear infinite;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 0, 0, 0.5);
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -50%;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: 50%;
+        }
+
+        @keyframes floatHearts {
+            0% {
+                transform: translateY(100vh) rotate(-45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+
+        /* Navbar */
+        nav {
+            background-color: #000; /* Preto */
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Espaço entre os itens do menu */
+        }
+
+        nav ul li a {
+            color: #fff; /* Branco */
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #ff0000; /* Vermelho */
+            color: #fff;
+        }
+
+        /* Seções (Páginas) */
+        .page {
+            display: none; /* Por padrão, todas as páginas ficam escondidas */
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .page.active {
+            display: block; /* A página ativa é exibida */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 {
+            color: #ff0000; /* Vermelho */
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        p {
+            line-height: 1.6;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="heart-background" id="heart-container"></div>
+    <nav>
+        <ul>
+            <li><a href="index.html" data-page="home">Início</a></li>
+            <li><a href="linhaadotempo.html" data-page="timeline">Nossa História</a></li>
+            <li><a href="albumdefotos.html" data-page="photos">Álbum de Fotos</a></li>
+            <li><a href="nossoquiz.html" data-page="quiz">Nosso Quiz</a></li>
+            <li><a href="#countdown" data-page="countdown">Contagem Regressiva</a></li>
+            <li><a href="#playlist" data-page="playlist">Nossas Músicas</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="page active">
+        <h1>Bem-vindos ao Nosso Cantinho Especial!</h1>
+        <p>Aqui você vai encontrar um pedacinho da nossa história, das nossas memórias e do nosso amor. Explore e divirta-se!</p>
+        <p>Feito com todo carinho para você, meu amor. ❤️</p>
+    </section>
+
+    <section id="timeline" class="page">
+        <h2>Nossa História</h2>
+        <div class="timeline-content">
+            <p>Em breve, nossa linha do tempo cheia de momentos especiais!</p>
+        </div>
+    </section>
+
+    <section id="photos" class="page">
+        <h2>Álbum de Fotos</h2>
+        <div class="photo-gallery">
+            <p>Nossas fotos mais lindas estarão aqui!</p>
+        </div>
+    </section>
+
+    <section id="quiz" class="page">
+        <h2>Nosso Quiz</h2>
+        <div class="quiz-content">
+            <p>Teste seus conhecimentos sobre a gente. Prepare-se para se divertir!</p>
+        </div>
+    </section>
+
+    <section id="countdown" class="page">
+        <h2>Contagem Regressiva para 1 Ano de Namoro!</h2>
+        <div id="countdown-timer" style="font-size: 2em; text-align: center; margin-top: 30px; color: #ff0000;">
+            </div>
+    </section>
+
+    <section id="playlist" class="page">
+        <h2>Nossas Músicas Favoritas</h2>
+        <div class="playlist-content">
+            <p>Nossa trilha sonora estará aqui para embalar nossos momentos.</p>
+        </div>
+    </section>
+
+    <script>
+        /* JAVASCRIPT GERAL AQUI */
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('nav ul li a');
+            const pages = document.querySelectorAll('.page');
+            const heartContainer = document.getElementById('heart-container');
+
+            // Função para mostrar a página correta
+            function showPage(pageId) {
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                });
+                const activePage = document.getElementById(pageId);
+                if (activePage) {
+                    activePage.classList.add('active');
+                }
+            }
+
+            // Lidar com cliques na navegação
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = link.getAttribute('data-page');
+                    showPage(pageId);
+
+                    // Opcional: Atualizar a URL sem recarregar a página
+                    history.pushState(null, '', `#${pageId}`);
+                });
+            });
+
+            // Lidar com a navegação inicial ou ao recarregar a página com hash
+            const initialHash = window.location.hash.substring(1);
+            if (initialHash && document.getElementById(initialHash)) {
+                showPage(initialHash);
+            } else {
+                showPage('home'); // Mostra a página inicial por padrão
+            }
+
+            // Gerar corações flutuantes
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heartContainer.appendChild(heart);
+
+                heart.style.width = Math.random() * 20 + 10 + 'px'; /* Tamanho entre 10 e 30px */
+                heart.style.height = heart.style.width;
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 5 + 5 + 's'; /* Duração entre 5 e 10s */
+                heart.style.opacity = Math.random() * 0.5 + 0.3; /* Opacidade entre 0.3 e 0.8 */
+
+                heart.addEventListener('animationend', () => {
+                    heart.remove();
+                });
+            }
+
+            setInterval(createHeart, 300); // Cria um coração a cada 300ms
+
+            // --- CONTADOR REGRESSIVO ---
+            const countdownDate = new Date("December 25, 2025 00:00:00").getTime(); // **ATENÇÃO: Mude esta data para o dia do seu 1 ano de namoro!**
+
+            const x = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                const countdownTimer = document.getElementById("countdown-timer");
+                if (countdownTimer) {
+                    countdownTimer.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+                    if (distance < 0) {
+                        clearInterval(x);
+                        countdownTimer.innerHTML = "JÁ COMPLETAMOS 1 ANO DE NAMORO! ❤️";
+                    }
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
